@@ -1,9 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
    return (
-      <div>
-         <h2>This is our footer</h2>
+      <div className=' flex items-center justify-center capitalize   bg-gray-700 text-white py-7 '>
+         <p>&copy;all right reserved by <Link to="/Safe Loan"> Safe Loan </Link></p>
       </div>
    );
 };
