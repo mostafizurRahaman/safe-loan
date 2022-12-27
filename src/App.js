@@ -1,12 +1,13 @@
 
 import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
-import './App.css';
 import Router from './Routes/Routes/Routes';
 import Aos from 'aos';
 import 'aos/dist/aos.css'; 
+import './App.css';
 
-function App() {
+function App() { 
+
 
 
 useEffect(()=>{
