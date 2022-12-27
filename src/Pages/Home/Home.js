@@ -3,19 +3,21 @@ import loanHome from '../../Assets/LoanHome.png';
 import PrimaryButton from "../../Components/PrimaryButton/PrimaryButton";
 const Home = () => {
    return (
-      <div className="flex items-center justify-center   px-5 md:px-10  min-h-screen bg-primary  ">
-         <div className="md:w-1/2  w-full   " >
-            <h2 className="text-secondary text-3xl font-bold uppercase  mb-6  md:text-6xl ">
+      <div className="flex md:flex-row flex-col-reverse  items-center justify-center   px-5 md:px-10  min-h-screen bg-primary py-10 ">
+         <div className="md:w-1/2  w-full   md:text-start text-center " >
+            <h2 className="text-secondary text-5xl font-bold capitalize  mb-6  md:text-6xl  " style={{lineHeight: "1.1em"}}>
                For Safe home <br /> get safe Loan
             </h2>
             <p className="text-accent  text-xl ">
                Safe loan provide loans with low interest for build your home
                safe and strongly
             </p>
-           <PrimaryButton path="/calculate-emi" text="apply for loan"></PrimaryButton>
+           <div className="flex items-center justify-center md:block">
+            <PrimaryButton path="/calculate-emi" text="apply for loan"></PrimaryButton>
+           </div>
          </div>
          <div className="flex items-center justify-center w-full md:w-1/2">
-               <img src={loanHome} alt="LoanHome" className="w-[75%]" />
+               <img src={loanHome} alt="LoanHome" className="w-[85%]" />
          </div>
       </div>
    );
