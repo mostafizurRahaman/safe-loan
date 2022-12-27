@@ -7,8 +7,8 @@ function App() {
   return (
     <div className=''>
        <RouterProvider router={Router}>
-
-       </RouterProvider>
+        
+      </RouterProvider>
     </div>
   );
 }
