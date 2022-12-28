@@ -45,8 +45,9 @@ const SignUp = () => {
                      name: data.name, 
                      email: data.email, 
                      photoURL: imageUrl,
+                     role: "customer", 
                   }
-                  console.log(newUser); 
+                  
                   saveUser(newUser); 
                })
                .catch((err) => console.log(err));
