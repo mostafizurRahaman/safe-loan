@@ -6,18 +6,27 @@ import { useForm } from "react-hook-form";
 import ErrorMessage from "../../Components/ErrorMessage/ErrorMessage";
 import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 import { toast } from "react-hot-toast";
+import useToken from "../../hooks/useToken/useToken";
+import { useNavigate } from "react-router-dom";
 
 
 
 const SignUp = () => {
    const { createUser, updateInfo } = useContext(AuthContext);
    const [accept, setAccept] = useState(false);
-   
+   const [signUpEmail, setSignUpEmail] = useState(''); 
+   const {token, isTokenLoading} = useToken(signUpEmail); 
+   const navigate = useNavigate(); 
    const {
       register,
       handleSubmit,
       formState: { errors },
    } = useForm();
+
+
+   if(token){
+      navigate('/'); 
+   }
 
    const imageKey = process.env.REACT_APP_IMAGE_BB_KEY;
 
@@ -74,6 +83,7 @@ const SignUp = () => {
       .then(res =>res.json())
       .then(data => {
          if(data.acknowledged){
+            setSignUpEmail(user?.email); 
             toast.success('Congratulations, successfully create a profile'); 
          }
       })
