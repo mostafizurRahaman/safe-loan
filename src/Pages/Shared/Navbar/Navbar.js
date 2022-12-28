@@ -6,7 +6,7 @@ import {HiOutlineLogout} from 'react-icons/hi';
 const Navbar = () => {
    const {user, logOut} = useContext(AuthContext); 
    return (
-      <nav className="flex items-center justify-between  h-20 px-5 md:px-10 bg-primary  text-accent    uppercase border-b border-accent  ">
+      <nav className="flex items-center justify-between  h-20 px-5 md:px-10 bg-primary  text-accent    uppercase border-b border-accent z-50  ">
          <div>
             <Link to="/" className="flex items-center justify-center  gap-2">
                <img src={logo} alt="customer-loan" className="w-14 h-auto " />
