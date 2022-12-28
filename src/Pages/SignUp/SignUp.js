@@ -7,29 +7,27 @@ import ErrorMessage from "../../Components/ErrorMessage/ErrorMessage";
 import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 import { toast } from "react-hot-toast";
 import useToken from "../../hooks/useToken/useToken";
-import { useNavigate } from "react-router-dom";
-
-
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
    const { createUser, updateInfo } = useContext(AuthContext);
    const [accept, setAccept] = useState(false);
-   const [signUpEmail, setSignUpEmail] = useState(''); 
-   const {token, isTokenLoading} = useToken(signUpEmail); 
-   const navigate = useNavigate(); 
+   const [signUpEmail, setSignUpEmail] = useState("");
+   const { token } = useToken(signUpEmail);
+   const navigate = useNavigate();
    const {
       register,
       handleSubmit,
       formState: { errors },
    } = useForm();
 
-
-   if(token){
-      navigate('/'); 
+   if (token) {
+      navigate("/");
    }
 
    const imageKey = process.env.REACT_APP_IMAGE_BB_KEY;
 
+   // get form Data + upload Image  on ImageBB + Create New User
    const onSubmit = (data) => {
       const formData = new FormData();
       const UploadedImage = data.image[0];
@@ -51,13 +49,13 @@ const SignUp = () => {
                   };
                   handleUpdate(profile);
                   const newUser = {
-                     name: data.name, 
-                     email: data.email, 
+                     name: data.name,
+                     email: data.email,
                      photoURL: imageUrl,
-                     role: "customer", 
-                  }
-                  
-                  saveUser(newUser); 
+                     role: "customer",
+                  };
+
+                  saveUser(newUser);
                })
                .catch((err) => console.log(err));
          })
@@ -71,29 +69,29 @@ const SignUp = () => {
          .catch((err) => console.log(err));
    };
 
-   // save user api: 
+   // save user api:
    const saveUser = (user) => {
-      fetch('http://localhost:5000/users', {
-         method: "POST", 
+      fetch("http://localhost:5000/users", {
+         method: "POST",
          headers: {
-            "content-type": "application/json", 
-         }, 
-         body: JSON.stringify(user)
+            "content-type": "application/json",
+         },
+         body: JSON.stringify(user),
       })
-      .then(res =>res.json())
-      .then(data => {
-         if(data.acknowledged){
-            setSignUpEmail(user?.email); 
-            toast.success('Congratulations, successfully create a profile'); 
-         }
-      })
-      .catch(err => console.log(err)); 
-   }
+         .then((res) => res.json())
+         .then((data) => {
+            if (data.acknowledged) {
+               setSignUpEmail(user?.email);
+               toast.success("Congratulations, successfully create a profile");
+            }
+         })
+         .catch((err) => console.log(err));
+   };
    return (
       <div className="min-h-screen py-10 md:px-10 px-5 bg-primary ">
          <div className="flex  items-center justify-center  md:flex-row flex-col-reverse  gap-20 h-auto  ">
             <div className="md:w-1/2 w-full">
-               <div className="w-full  md:w-[400px] bg-primary   bg-opacity-75  p-5 rounded-lg myForm flex items-center justify-center ">
+               <div className="w-full  md:w-[400px] bg-primary   bg-opacity-75  p-5 rounded-lg myForm flex items-center justify-center " data-aos="fade-up-right">
                   <form
                      className="w-full  flex items-center flex-col gap-3 h-auto "
                      onSubmit={handleSubmit(onSubmit)}
@@ -198,20 +196,26 @@ const SignUp = () => {
                            Accept our <span>terms and condition</span>
                         </label>
                      </div>
-                     <div>
+                     <div className="flex items-center justify-center flex-col ">
                         <button
                            type="submit"
-                           className="text-white font-semibold uppercase px-10 py-2 bg-secondary hover:bg-opacity-80  rounded-lg "
+                           className="mb-2  text-white font-semibold uppercase px-10 py-2 bg-secondary hover:bg-opacity-80  rounded-lg "
                            style={{ letterSpacing: "2px" }}
                            disabled={!accept}
                         >
                            Submit
                         </button>
+                        <div className="mb-5">
+                           <p className="text-center  text-xs  text-accent font-semibold capitalize">
+                              Already have an account?
+                              <Link className="border-b border-b-secondary  text-secondary ml-1" to="/signin">sing In</Link>
+                           </p>
+                        </div>
                      </div>
                   </form>
                </div>
             </div>
-            <div className="w-full  md:w-1/2 flex items-center justify-center ">
+            <div className="w-full  md:w-1/2 flex items-center justify-center " data-aos="fade-up-left">
                <img
                   src={sideRegister}
                   alt="sign_up_image"
