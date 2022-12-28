@@ -1,14 +1,34 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ErrorMessage from '../../Components/ErrorMessage/ErrorMessage';
 import signin from '../../Assets/signin.png'; 
-import { BiImageAdd } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
+import useToken from '../../hooks/useToken/useToken';
+import { toast } from 'react-hot-toast';
 const SignIn = () => {
    const {register, handleSubmit, formState:{errors}} =  useForm(); 
-  
+   const {logIn} = useContext(AuthContext); 
+   const [loginEmail, setLoginEmail] = useState(''); 
+   const {token} = useToken(loginEmail); 
+   const location = useLocation(); 
+   const navigate = useNavigate(); 
+   const from = location.state?.from?.pathname || '/'; 
+   
+   if(token){
+      navigate(from, {replace : true})
+   }
+
+   
+   
    const onSubmit  =(data) => {
-      console.log(data); 
+         logIn(data.email, data.password)
+         .then(res => {
+            const user = res.user; 
+            setLoginEmail(user.email); 
+            toast.success(`${user.displayName}, SuccessFully Login`); 
+         })
+         .catch(err => console.log(err))
    }
 
 
