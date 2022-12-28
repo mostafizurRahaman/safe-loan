@@ -208,7 +208,7 @@ const SignUp = () => {
                         <div className="mb-5">
                            <p className="text-center  text-xs  text-accent font-semibold capitalize">
                               Already have an account?
-                              <Link className="border-b border-b-secondary  text-secondary ml-1" to="/signin">sing In</Link>
+                              <Link className="border-b border-b-secondary  text-secondary ml-1" to="/signin">sign In</Link>
                            </p>
                         </div>
                      </div>
