@@ -6,7 +6,7 @@ import Aos from 'aos';
 import 'aos/dist/aos.css'; 
 import './App.css';
 import { Toaster } from 'react-hot-toast';
-import Loading from './Components/Loading/Loading';
+
 
 function App() { 
 
@@ -21,7 +21,7 @@ useEffect(()=>{
     <div className=''>
        <RouterProvider router={Router}>        
       </RouterProvider>
-      <Loading></Loading>
+      
       <Toaster></Toaster>
     </div>
   );
