@@ -1,17 +1,17 @@
 import React, { createContext, useEffect, useState } from 'react';
-import {createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signOut, updateProfile} from "firebase/auth"; 
+import {createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile} from "firebase/auth"; 
 import app from '../../Firebase/Firebase.Config';
-import { current } from 'daisyui/src/colors';
+
 
 
 export const AuthContext = createContext(); 
 const auth = getAuth(app); 
-const gooleProvider = new GoogleAuthProvider(); 
+const googleProvider = new GoogleAuthProvider(); 
 
 
 const AuthProvider = ({children}) => {
    const [user, setUser] = useState(null)
-   const {loading, setLoading} = useState(false); 
+   const [loading, setLoading] = useState(false); 
    
    
    const createUser =(email, password) => {
@@ -33,6 +33,10 @@ const AuthProvider = ({children}) => {
       return signOut(auth); 
    }
 
+   const googleSignIn  =() => {
+      return signInWithPopup(auth, googleProvider)
+   }
+
 
    const verifyEmail = () => {
       return sendEmailVerification(auth.currentUser); 
@@ -41,6 +45,7 @@ const AuthProvider = ({children}) => {
    useEffect(()=>{
       const unsubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser); 
+            console.log(currentUser);
             setLoading(false); 
       }); 
 
@@ -49,10 +54,10 @@ const AuthProvider = ({children}) => {
    }, [])
 
   
-   const authInfo = {user, setUser, createUser, logIn,logOut, loading, setLoading,updateInfo,verifyEmail  }; 
+   const authInfo = {user, setUser, createUser, logIn,logOut, loading, setLoading,updateInfo,verifyEmail, googleSignIn  }; 
    return (
       <AuthContext.Provider value={authInfo}>
-         
+            {children}
       </AuthContext.Provider>
    );
 };

@@ -2,11 +2,10 @@
    box-shadow:inset 2px 2px 1px rgba(246, 246, 246, 0.516),  -2px -2px 1px rgba(221, 221, 221, 0.457) inset;
    
 }
-
-::-webkit-file-upload-button {
-   display: none;
-}
-
-::file-selector-button {
+.myForm ::file-selector-button {
    display: none;
  }
+
+.myForm ::-webkit-file-upload-button {
+   display: none;
+}
