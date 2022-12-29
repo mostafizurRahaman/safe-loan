@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 import {createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile} from "firebase/auth"; 
 import app from '../../Firebase/Firebase.Config';
+import { set } from 'react-hook-form';
 
 
 
@@ -11,7 +12,7 @@ const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({children}) => {
    const [user, setUser] = useState(null)
-   const [loading, setLoading] = useState(false); 
+   const [loading, setLoading] = useState(true); 
    
    
    const createUser =(email, password) => {
@@ -43,9 +44,9 @@ const AuthProvider = ({children}) => {
    }
 
    useEffect(()=>{
+      setLoading(true); 
       const unsubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser); 
-            console.log(currentUser);
             setLoading(false); 
       }); 
 
