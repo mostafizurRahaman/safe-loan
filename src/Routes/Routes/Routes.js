@@ -1,8 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../../Layout/Main/Main";
+import CalculateImi from "../../Pages/CalculateImi/CalculateImi";
 import Home from "../../Pages/Home/Home";
 import SignIn from "../../Pages/SignIn/SignIn";
 import SignUp from "../../Pages/SignUp/SignUp";
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
 
 
 
@@ -27,6 +29,10 @@ const Router = createBrowserRouter([
             {
                path: "/signup", 
                element: <SignUp></SignUp>
+            }, 
+            {
+               path: "/get-loan", 
+               element: <PrivateRoute><CalculateImi></CalculateImi></PrivateRoute>
             }, 
             {
                path: '*', 
