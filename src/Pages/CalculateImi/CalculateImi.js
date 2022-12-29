@@ -26,7 +26,7 @@ const CalculateImi = () => {
          monthlyInterestRate *
          (additionR / substractR)
       ).toPrecision(5);
-      const totalAmount = month * parseFloat(emi);
+      const totalAmount = (month * parseFloat(emi)).toFixed(2);
       const totalInterest = Math.floor(totalAmount - loanAmount);
       console.log(emi);
       console.log(totalAmount);
@@ -36,7 +36,7 @@ const CalculateImi = () => {
          Interest: parseFloat(interestRate),
          month: parseFloat(month),
          monthlyEmi: parseFloat(emi),
-         totalAmount: totalAmount,
+         totalAmount: parseFloat(totalAmount),
          totalInterest: totalInterest,
       };
       setEmiDetails(emiObject);
@@ -49,7 +49,7 @@ const CalculateImi = () => {
             <div className="flex items-center justify-center gap-5 md:flex-row flex-col-reverse ">
                <div className="md:w-1/2 w-full   flex items-center justify-center ">
                   <form
-                     className="text-accent capitalize  bg-primary p-5 py-14 rounded-lg flex gap-4 flex-col w-[400px]  myForm"
+                     className="text-accent capitalize  bg-primary p-5 py-10 rounded-lg flex gap-4 flex-col w-[400px]  myForm"
                      onSubmit={handleSubmit(onSubmit)}
                   >
                      <div className="text-3xl font-bold  uppercase text-center ">
@@ -122,7 +122,7 @@ const CalculateImi = () => {
                         )}
                      </div>
                      <div className="flex items-center justify-center ">
-                        <button className="rounded-lg  hover:bg-white hover:text-primary duration-1000 transition-all px-5 py-2 bg-secondary ">
+                        <button className="rounded-lg hover:scale-75  hover:bg-white hover:text-primary duration-500 transition-all px-5 py-2 bg-secondary mt-3">
                            Calculate
                         </button>
                      </div>
@@ -137,7 +137,7 @@ const CalculateImi = () => {
          </section>
         {
          emiDetails  && 
-            <LoanDetails emiDetails={emiDetails}></LoanDetails>
+            <LoanDetails emiDetails={emiDetails} setEmiDetails={setEmiDetails}></LoanDetails>
         }                        
          
       </div>

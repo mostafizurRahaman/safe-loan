@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
+import { toast } from 'react-hot-toast';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 
-const LoanDetails = ({emiDetails}) => {
+const LoanDetails = ({emiDetails, setEmiDetails}) => {
    const {user} = useContext(AuthContext); 
 
    const handleSubmit = (event) => {
@@ -12,7 +13,22 @@ const LoanDetails = ({emiDetails}) => {
          email: user?.email, 
          photo: user?.photoURL,  
       }
-      console.log(loanDetails); 
+      fetch(`http://localhost:5000/loans`,{
+         method: "post", 
+         headers: {
+            "content-type":"application/json", 
+            authorization : `bearer ${localStorage.getItem('safeLoanToken')}`
+         }, 
+         body: JSON.stringify(loanDetails)
+      })
+      .then(res =>res.json())
+      .then(data => {
+         if(data.acknowledged){
+            console.log(data); 
+            toast.success("Congratulations your application submitted"); 
+         }
+      })
+      .catch(err => console.log(err)); 
    }
    return (
       <section className="mt-20 flex items-center justify-center ">
@@ -56,7 +72,7 @@ const LoanDetails = ({emiDetails}) => {
                />
             </div>
             <div className="flex flex-col gap-2 flex-grow">
-               <label htmlFor="interestRate">interest Rate:</label>
+               <label htmlFor="interestRate">interest Rate (%):</label>
                <input
                   className="text-base border-accent border lg:w-full  rounded-lg px-2 py-1 placeholder:capitalize  placeholder:text-[15px] bg-accent  text-primary font-bold "
                   type="number"
@@ -108,10 +124,11 @@ const LoanDetails = ({emiDetails}) => {
                />
             </div>
          </div>
-         <div className="flex items-center justify-center ">
-            <button className="rounded-lg  hover:bg-white hover:text-primary duration-1000 transition-all px-5 py-2 bg-secondary ">
+         <div className="flex items-center justify-center  gap-5 mt-3">
+            <button className="rounded-lg  hover:scale-75 hover:text-primary duration-400 transition-all px-5 py-2 bg-green-600 ">
                Apply now
             </button>
+            <button onClick={()=> setEmiDetails(null)} className='rounded-lg   hover:scale-75 hover:text-primary duration-1000 transition-all px-5 py-2 bg-secondary'>Cancel</button>
          </div>
       </form>
       
