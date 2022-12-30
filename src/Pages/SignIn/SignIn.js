@@ -17,7 +17,8 @@ const SignIn = () => {
    const from = location.state?.from?.pathname || '/'; 
    
    if(token){
-      navigate(from, {replace : true})
+      navigate(from, {replace : true}); 
+      window.location.reload(); 
    }
 
    

@@ -2,10 +2,13 @@ import React, { useContext } from "react";
 import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 import { FaEdit } from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query";
+import Loading from "../../Components/Loading/Loading";
 
 
 const UserProfile = () => {
    const { user, logOut } = useContext(AuthContext); 
+   const {loading} = useContext(AuthContext); 
+
 
    const {data:loans=[], isLoading, refetch} = useQuery({
       queryKey:["loans", user?.email], 
@@ -22,6 +25,10 @@ const UserProfile = () => {
          return data; 
       }
    })
+
+   if(loading){
+      return <Loading></Loading>
+   }
    console.log(loans); 
    return (
       <div className="flex justify-start">

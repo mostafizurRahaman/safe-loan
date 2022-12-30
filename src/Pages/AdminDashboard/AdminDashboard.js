@@ -1,12 +1,15 @@
-import { async } from "@firebase/util";
+
 import { useQuery } from "@tanstack/react-query";
-import { data } from "autoprefixer";
+
 import React, { useContext } from "react";
-import { FaEdit, FaLongArrowAltDown } from "react-icons/fa";
+import { toast } from "react-hot-toast";
+import { FaEdit,  } from "react-icons/fa";
+
+import Loading from "../../Components/Loading/Loading";
 import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 
 const AdminDashboard = () => {
-   const { user, logOut } = useContext(AuthContext);
+   const { user, logOut, loading:userLoading } = useContext(AuthContext);
 
    const {
       data: loans = [],
@@ -51,10 +54,56 @@ const AdminDashboard = () => {
 
    // for approve  loan: 
    const handleApprove  =(id) => {
+      fetch(`http://localhost:5000/loans/${id}`, {
+         method: 'put', 
+         headers:{
+            authorization: `bearer ${localStorage.getItem('safeLoanToken')}`
+         }, 
+      })
+      .then(res => {
+         if(res.status === 401  || res.status === 403){
+            return logOut(); 
+         }
+         return res.json(); 
+      })
+      .then(data => {
+           if(data.modifiedCount){
+               toast.success('Loan is approved'); 
+               refetch(); 
+           }
+      })
+      .catch(err => console.log(err))
+   }
+
+
+   // for delete user : 
+   const handleDelete =(u) =>{
+      console.log(u); 
+      fetch(`http://localhost:5000/users/${u._id}`,{
+         method: 'delete', 
+         headers:{
+            authorization : `bearer ${localStorage.getItem('safeLoanToken')}`
+         }, 
+      })
+      .then(res => {
+         if(res.status === 403 || res.status===401){
+            return logOut();
+         }
+         return res.json(); 
+      })
+      .then(data => {
+         if(data.deletedCount){
+            toast.success(`${u.name} is deleted`); 
+            refetch1(); 
+         }
+      })
+      .catch(err =>console.log(err)); 
       
    }
 
-   console.log(users);
+   if(loading || isLoading || userLoading){
+      return <Loading></Loading>
+   }
    return (
       <div className="flex justify-start w-full">
          <aside className="min-w-[300px] min-h-screen bg-primary px-5 py-5">
@@ -130,7 +179,7 @@ const AdminDashboard = () => {
                            </td>
                            <td>
                               {loan?.status === "approved" || (
-                                 <button className=" bg-primary text-accent font-bold uppercase px-3 py-2 rounded-md hover:scale-75">
+                                 <button className=" bg-primary text-accent font-bold uppercase px-3 py-2 rounded-md hover:scale-75" onClick={()=>handleApprove(loan._id)} >
                                     approve
                                  </button>
                               )}
@@ -159,21 +208,21 @@ const AdminDashboard = () => {
                         </tr>
                      </thead>
                      <tbody>
-                        {loans.map((loan, idx) => (
-                           <tr className="text-center text-xs" key={loan._id}>
+                        {users.map((u, idx) => (
+                           <tr className="text-center text-xs" key={u._id}>
                               <td>{idx + 1}</td>
                               <td className="flex items-center justify-center">
                                  <img
                                     className="w-10 h-10 rounded-full"
-                                    src={loan.photo}
+                                    src={u.photoURL}
                                     alt="user_profile"
                                  />
                               </td>
-                              <td>{loan.name}</td>
-                              <td>{loan.email}</td>
+                              <td>{u.name}</td>
+                              <td>{u.email}</td>
 
                               <td>
-                                 <button className=" bg-secondary text-accent font-bold uppercase px-3 py-2 rounded-md hover:scale-75">
+                                 <button className=" bg-secondary text-accent font-bold uppercase px-3 py-2 rounded-md hover:scale-75" onClick={()=>handleDelete(u)} >
                                     Delete
                                  </button>
                               </td>

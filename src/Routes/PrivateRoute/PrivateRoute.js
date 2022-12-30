@@ -10,7 +10,7 @@ const PrivateRoute = ({children}) => {
       return <Loading></Loading>
    }
 
-   if(user?.uid){
+   if(user){
       return children; 
    }
    return  <Navigate to="/signin" state={{from: location}} replace></Navigate>

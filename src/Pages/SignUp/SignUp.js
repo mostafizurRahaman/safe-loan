@@ -8,9 +8,11 @@ import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 import { toast } from "react-hot-toast";
 import useToken from "../../hooks/useToken/useToken";
 import { Link, useNavigate } from "react-router-dom";
+import Loading from "../../Components/Loading/Loading";
 
 const SignUp = () => {
    const { createUser, updateInfo } = useContext(AuthContext);
+   const [resLoading ,setResLoading] = useState(false); 
    const [accept, setAccept] = useState(false);
    const [error , setError] = useState(); 
    const [signUpEmail, setSignUpEmail] = useState("");
@@ -24,12 +26,14 @@ const SignUp = () => {
 
    if (token) {
       navigate("/");
+      window.location.reload(); 
    }
 
    const imageKey = process.env.REACT_APP_IMAGE_BB_KEY;
 
    // get form Data + upload Image  on ImageBB + Create New User
    const onSubmit = (data) => {
+      setResLoading(true); 
       setError(''); 
       const formData = new FormData();
       const UploadedImage = data.image[0];
@@ -56,12 +60,16 @@ const SignUp = () => {
                      photoURL: imageUrl,
                      role: "customer",
                   };
+                  
 
                   saveUser(newUser);
                })
                .catch((err) => setError(err.message));
          })
-         .catch((err) =>setError(err.message));
+         .catch((err) =>setError(err.message))
+         .finally(()=>{
+            setResLoading(false); 
+         })
    };
 
    // Update User Information by this function.
@@ -85,10 +93,19 @@ const SignUp = () => {
             if (data.acknowledged) {
                setSignUpEmail(user?.email);
                toast.success("Congratulations, successfully create a profile");
+               setResLoading(false); 
+              
             }
          })
-         .catch((err) => setError(err.message));
+         .catch((err) => setError(err.message))
+         .finally(()=>{
+            setResLoading(false); 
+         });
    };
+
+   if(resLoading){
+      return <Loading></Loading>
+   }
    return (
       <div className="min-h-screen py-10 md:px-10 px-5 bg-primary ">
          <div className="flex  items-center justify-center  md:flex-row flex-col-reverse  gap-20 h-auto  ">

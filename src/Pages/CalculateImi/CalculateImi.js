@@ -1,7 +1,8 @@
-import React, {  useState } from "react";
+import React, {  useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import imiCalculator from "../../Assets/emiCalculator.png";
 import ErrorMessage from "../../Components/ErrorMessage/ErrorMessage";
+
 
 import LoanDetails from "../LaonDetails/LoanDetails";
 
@@ -42,6 +43,7 @@ const CalculateImi = () => {
       setEmiDetails(emiObject);
    };
 
+ 
 
    return (
       <div className="min-h-screen my_calculator_imi py-10 bg-primary   px-5 md:px-10">

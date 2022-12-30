@@ -12,7 +12,7 @@ const CustomerRoute = ({children}) => {
       return <Loading></Loading>
    }
 
-   if(user?.uid && isCustomer){
+   if(user && isCustomer){
       return children; 
    }
 
