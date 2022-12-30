@@ -12,9 +12,9 @@ import Loading from "../../Components/Loading/Loading";
 
 const SignUp = () => {
    const { createUser, updateInfo } = useContext(AuthContext);
-   const [resLoading ,setResLoading] = useState(false); 
+   const [resLoading, setResLoading] = useState(false);
    const [accept, setAccept] = useState(false);
-   const [error , setError] = useState(); 
+   const [error, setError] = useState();
    const [signUpEmail, setSignUpEmail] = useState("");
    const { token } = useToken(signUpEmail);
    const navigate = useNavigate();
@@ -26,15 +26,15 @@ const SignUp = () => {
 
    if (token) {
       navigate("/");
-      window.location.reload(); 
+      window.location.reload();
    }
 
    const imageKey = process.env.REACT_APP_IMAGE_BB_KEY;
 
    // get form Data + upload Image  on ImageBB + Create New User
    const onSubmit = (data) => {
-      setResLoading(true); 
-      setError(''); 
+      setResLoading(true);
+      setError("");
       const formData = new FormData();
       const UploadedImage = data.image[0];
       console.log(UploadedImage);
@@ -60,16 +60,15 @@ const SignUp = () => {
                      photoURL: imageUrl,
                      role: "customer",
                   };
-                  
 
                   saveUser(newUser);
                })
                .catch((err) => setError(err.message));
          })
-         .catch((err) =>setError(err.message))
-         .finally(()=>{
-            setResLoading(false); 
-         })
+         .catch((err) => setError(err.message))
+         .finally(() => {
+            setResLoading(false);
+         });
    };
 
    // Update User Information by this function.
@@ -81,7 +80,7 @@ const SignUp = () => {
 
    // save user api:
    const saveUser = (user) => {
-      fetch("http://localhost:5000/users", {
+      fetch("https://safe-loan-server.vercel.app/users", {
          method: "POST",
          headers: {
             "content-type": "application/json",
@@ -93,24 +92,26 @@ const SignUp = () => {
             if (data.acknowledged) {
                setSignUpEmail(user?.email);
                toast.success("Congratulations, successfully create a profile");
-               setResLoading(false); 
-              
+               setResLoading(false);
             }
          })
          .catch((err) => setError(err.message))
-         .finally(()=>{
-            setResLoading(false); 
+         .finally(() => {
+            setResLoading(false);
          });
    };
 
-   if(resLoading){
-      return <Loading></Loading>
+   if (resLoading) {
+      return <Loading></Loading>;
    }
    return (
       <div className="min-h-screen py-10 md:px-10 px-5 bg-primary ">
          <div className="flex  items-center justify-center  md:flex-row flex-col-reverse  gap-20 h-auto  ">
             <div className="md:w-1/2 w-full">
-               <div className="w-full  md:w-[400px] bg-primary   bg-opacity-75  p-5 rounded-lg myForm flex items-center justify-center " data-aos="fade-up-right">
+               <div
+                  className="w-full  md:w-[400px] bg-primary   bg-opacity-75  p-5 rounded-lg myForm flex items-center justify-center "
+                  data-aos="fade-up-right"
+               >
                   <form
                      className="w-full  flex items-center flex-col gap-3 h-auto "
                      onSubmit={handleSubmit(onSubmit)}
@@ -217,9 +218,7 @@ const SignUp = () => {
                      </div>
                      <div className="flex items-center justify-center flex-col ">
                         <div>
-                           {
-                              error && <ErrorMessage>{error}</ErrorMessage>
-                           }
+                           {error && <ErrorMessage>{error}</ErrorMessage>}
                         </div>
                         <button
                            type="submit"
@@ -232,14 +231,22 @@ const SignUp = () => {
                         <div className="mb-5">
                            <p className="text-center  text-xs  text-accent font-semibold capitalize">
                               Already have an account?
-                              <Link className="border-b border-b-secondary  text-secondary ml-1" to="/signin">sign In</Link>
+                              <Link
+                                 className="border-b border-b-secondary  text-secondary ml-1"
+                                 to="/signin"
+                              >
+                                 sign In
+                              </Link>
                            </p>
                         </div>
                      </div>
                   </form>
                </div>
             </div>
-            <div className="w-full  md:w-1/2 flex items-center justify-center " data-aos="fade-up-left">
+            <div
+               className="w-full  md:w-1/2 flex items-center justify-center "
+               data-aos="fade-up-left"
+            >
                <img
                   src={sideRegister}
                   alt="sign_up_image"
