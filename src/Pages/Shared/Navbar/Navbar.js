@@ -3,8 +3,14 @@ import { Link } from "react-router-dom";
 import logo from "../../../Assets/logo.png"; 
 import { AuthContext } from "../../../Context/AuthProvider/AuthProvider";
 import {HiOutlineLogout} from 'react-icons/hi'; 
+import useAdmin from "../../../hooks/useAdmin/useAdmin";
+import useCustomer from "../../../hooks/useCustomer/useCustomer";
 const Navbar = () => {
    const {user, logOut} = useContext(AuthContext); 
+   const {isAdmin} = useAdmin(user?.email); 
+   const {isCustomer} = useCustomer(user?.email); 
+
+   
    return (
       <nav className="flex items-center justify-between  h-20 px-5 md:px-10 bg-primary  text-accent    uppercase border-b border-accent z-50  ">
          <div>
@@ -22,12 +28,25 @@ const Navbar = () => {
                    ?
                    <>
                      
-                     <Link className=" duration-1000 transition-all hover:text-secondary " to="/get-loan">Calculate emi</Link>
-                     <Link className=" duration-1000 transition-all hover:text-secondary " to="/dashboard">dashboard</Link>
-                     <Link className=" duration-1000 transition-all hover:text-secondary " to="/customer-profile">
-                         <img src={user?.photoURL} alt={`${user?.displayName} profile_picture`} className="w-12 h-12 rounded-full border-2 border-secondary "/>
-                     </Link>
-                     <HiOutlineLogout className="text-3xl cursor-pointer" onClick={()=> logOut()}></HiOutlineLogout>                    
+                     
+                     {
+                        isAdmin && <Link className=" duration-1000 transition-all hover:text-secondary " to="admin-dashboard">
+                           <img src={user?.photoURL} alt={`${user?.displayName} profile_picture`} className="w-12 h-12 rounded-full border-2 border-secondary "/>
+                        </Link>
+                     }
+                     {
+                        isCustomer && 
+                        <>
+                            <Link className=" duration-1000 transition-all hover:text-secondary " to="/get-loan">Calculate emi</Link>
+                     
+                              <Link className=" duration-1000 transition-all hover:text-secondary " to="/customer-profile">
+                                 <img src={user?.photoURL} alt={`${user?.displayName} profile_picture`} className="w-12 h-12 rounded-full border-2 border-secondary "/>
+                           </Link>
+                        </>
+                     }
+                     <HiOutlineLogout className="text-3xl cursor-pointer" onClick={()=> logOut()}></HiOutlineLogout>  
+
+
 
                    </> 
                    : 

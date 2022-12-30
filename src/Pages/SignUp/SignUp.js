@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 const SignUp = () => {
    const { createUser, updateInfo } = useContext(AuthContext);
    const [accept, setAccept] = useState(false);
+   const [error , setError] = useState(); 
    const [signUpEmail, setSignUpEmail] = useState("");
    const { token } = useToken(signUpEmail);
    const navigate = useNavigate();
@@ -29,6 +30,7 @@ const SignUp = () => {
 
    // get form Data + upload Image  on ImageBB + Create New User
    const onSubmit = (data) => {
+      setError(''); 
       const formData = new FormData();
       const UploadedImage = data.image[0];
       console.log(UploadedImage);
@@ -57,9 +59,9 @@ const SignUp = () => {
 
                   saveUser(newUser);
                })
-               .catch((err) => console.log(err));
+               .catch((err) => setError(err.message));
          })
-         .catch((err) => console.log(err));
+         .catch((err) =>setError(err.message));
    };
 
    // Update User Information by this function.
@@ -85,7 +87,7 @@ const SignUp = () => {
                toast.success("Congratulations, successfully create a profile");
             }
          })
-         .catch((err) => console.log(err));
+         .catch((err) => setError(err.message));
    };
    return (
       <div className="min-h-screen py-10 md:px-10 px-5 bg-primary ">
@@ -197,6 +199,11 @@ const SignUp = () => {
                         </label>
                      </div>
                      <div className="flex items-center justify-center flex-col ">
+                        <div>
+                           {
+                              error && <ErrorMessage>{error}</ErrorMessage>
+                           }
+                        </div>
                         <button
                            type="submit"
                            className="mb-2  text-white font-semibold uppercase px-10 py-2 bg-secondary hover:bg-opacity-80  rounded-lg "

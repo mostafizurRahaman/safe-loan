@@ -10,6 +10,7 @@ const SignIn = () => {
    const {register, handleSubmit, formState:{errors}} =  useForm(); 
    const {logIn} = useContext(AuthContext); 
    const [loginEmail, setLoginEmail] = useState(''); 
+   const [error ,setError] = useState(''); 
    const {token} = useToken(loginEmail); 
    const location = useLocation(); 
    const navigate = useNavigate(); 
@@ -22,13 +23,14 @@ const SignIn = () => {
    
    
    const onSubmit  =(data) => {
+      setError(''); 
          logIn(data.email, data.password)
          .then(res => {
             const user = res.user; 
             setLoginEmail(user.email); 
             toast.success(`${user.displayName}, SuccessFully Login`); 
          })
-         .catch(err => console.log(err))
+         .catch(err =>setError(err.message))
    }
 
 
@@ -94,6 +96,11 @@ const SignIn = () => {
                   
                   
                   <div className="flex items-center justify-center flex-col ">
+                     <div>
+                        {
+                           error && <ErrorMessage>{error}</ErrorMessage>
+                        }
+                     </div>
                      <button
                         type="submit"
                         className="mb-2  text-white font-semibold uppercase px-10 py-2 bg-secondary hover:bg-opacity-80  rounded-lg my-5"

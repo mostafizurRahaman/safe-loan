@@ -5,7 +5,7 @@ const useCustomer =(email) => {
    const [isCustomerLoading, setIsCustomerLoading] = useState(true); 
    useEffect(()=>{
       if(email){
-         fetch(`http:localhost:5000/users/isCustomer/${email}`, {
+         fetch(`http://localhost:5000/users/customer/${email}`, {
             headers: {
                authorization: `bearer ${localStorage.getItem('safeLoanToken')}`
             }
@@ -13,6 +13,7 @@ const useCustomer =(email) => {
          .then(res => res.json())
          .then(data => {
             setIsCustomer(data.isCustomer); 
+            console.log(data.isCustomer); 
             setIsCustomerLoading(false); 
          })
          .catch(err =>console.log(err))
