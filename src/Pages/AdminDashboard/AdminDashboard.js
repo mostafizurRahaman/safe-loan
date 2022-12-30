@@ -1,15 +1,18 @@
 
+import { ErrorResponse } from "@remix-run/router";
 import { useQuery } from "@tanstack/react-query";
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { toast } from "react-hot-toast";
 import { FaEdit,  } from "react-icons/fa";
+import { IoMdArrowDropleftCircle, IoMdArrowDroprightCircle } from "react-icons/io";
 
 import Loading from "../../Components/Loading/Loading";
 import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 
 const AdminDashboard = () => {
    const { user, logOut, loading:userLoading } = useContext(AuthContext);
+   const [showside, setShowSide] = useState(false);
 
    const {
       data: loans = [],
@@ -100,13 +103,35 @@ const AdminDashboard = () => {
       .catch(err =>console.log(err)); 
       
    }
+   const handleRole = (u) =>{
+      fetch(`http://localhost:5000/users/${u.email}`, {
+         method: 'put', 
+         headers: {
+            authorization: `bearer ${localStorage.getItem('safeLoanToken')}`
+         }, 
+      })
+      .then(res => {
+         if(res.status === 401 || res.status ===403){
+            return logOut(); 
+         }
+         return res.json()
+      })
+      .then(data => {
+         console.log(data); 
+         if(data.modifiedCount){
+            toast.success(`Now ${u.name} is an admin`); 
+            refetch1(); 
+         }
+      })
+      .catch(err => console.log(err))
+   }
 
    if(loading || isLoading || userLoading){
       return <Loading></Loading>
    }
    return (
       <div className="flex justify-start w-full">
-         <aside className="min-w-[300px] min-h-screen bg-primary px-5 py-5">
+         <aside className={`z-40 w-[320px] min-h-screen bg-primary px-5 py-5 fixed top-20  duration-1000 transition-all ${showside ? "left-0" : "left-[-999px]"}`}>
             <div>
                <div>
                   <div className="flex items-center justify-center relative">
@@ -116,7 +141,7 @@ const AdminDashboard = () => {
                         alt={user?.displayName}
                      />
                      <FaEdit className="cursor-pointer  font-bold text-3xl text-secondary absolute top-0 right-0"></FaEdit>
-                  </div>
+                  </div> 
                </div>
                <div className="my-5 border-2 border-accent ">
                   <h2 className="border-2 border-accent py-1 text-2xl  uppercase font-bold text-accent text-center rounded-sm ">
@@ -124,13 +149,19 @@ const AdminDashboard = () => {
                   </h2>
                   <div className="px-2 py-3 font-bold text-accent text-base">
                      <h3 className="uppercase ">{user?.displayName}</h3>
-                     <p className="">{user?.email}</p>
+                     <p className={`${user?.email.length >=25 ? "text-[12px]" : "text-base"}`}>{user?.email}</p>
                      <p>Role : Administrator</p>
                   </div>
                </div>
             </div>
          </aside>
          <div className="md:px-10 py-5 w-full  ">
+         <div className="animate-bounce text-4xl font-bold  top-24 right-5 text-secondary p-2 bg-primary rounded-lg fixed  z-20" onClick={()=>setShowSide(!showside)} >
+              
+              {
+                 showside ?  <IoMdArrowDropleftCircle></IoMdArrowDropleftCircle> : <IoMdArrowDroprightCircle></IoMdArrowDroprightCircle>
+              }
+           </div>
             <div className="flex items-center justify-center ">
                <h2 className="text-center text-3xl border-b-2 border-b-primary  inline-block  font-bold uppercase text-primary  ">
                   All loans{" "}
@@ -204,6 +235,8 @@ const AdminDashboard = () => {
                            <th>profile</th>
                            <th>name</th>
                            <th>email</th>
+                           <th>role</th>
+                           <th>make admin</th>
                            <th>Action</th>
                         </tr>
                      </thead>
@@ -220,11 +253,17 @@ const AdminDashboard = () => {
                               </td>
                               <td>{u.name}</td>
                               <td>{u.email}</td>
-
+                              
+                              <td>{u.role==="admin" ? <span className="text-green-600 capitalize">admin</span> : <span className="capitalize text-green-500 ">customer</span>} </td>
+                              <td>{u.role ==="customer" && <button className=" bg-secondary text-accent font-bold uppercase px-3 py-2 rounded-md hover:scale-75" onClick={()=>handleRole(u)} >
+                                    make admin
+                                 </button> }</td>
                               <td>
-                                 <button className=" bg-secondary text-accent font-bold uppercase px-3 py-2 rounded-md hover:scale-75" onClick={()=>handleDelete(u)} >
+                                 {
+                                    u.role ==="admin" || <button className=" bg-secondary text-accent font-bold uppercase px-3 py-2 rounded-md hover:scale-75" onClick={()=>handleDelete(u)} >
                                     Delete
                                  </button>
+                                 }
                               </td>
                            </tr>
                         ))}

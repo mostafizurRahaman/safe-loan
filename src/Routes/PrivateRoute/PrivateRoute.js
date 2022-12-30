@@ -4,7 +4,7 @@ import Loading from '../../Components/Loading/Loading';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 
 const PrivateRoute = ({children}) => {
-   const {user, loading} = useContext(AuthContext);
+   const {user, loading, logOut} = useContext(AuthContext);
    const location = useLocation(); 
    if(loading){
       return <Loading></Loading>
@@ -12,8 +12,10 @@ const PrivateRoute = ({children}) => {
 
    if(user){
       return children; 
+   }else{
+      logOut(); 
+      return <Navigate to="/signin" state={{from:location}} replace></Navigate>
    }
-   return  <Navigate to="/signin" state={{from: location}} replace></Navigate>
 };
 
 export default PrivateRoute;

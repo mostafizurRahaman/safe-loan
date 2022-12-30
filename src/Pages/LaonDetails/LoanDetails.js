@@ -1,11 +1,14 @@
 import React, { useContext } from 'react';
 import { toast } from 'react-hot-toast';
+
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 
 const LoanDetails = ({emiDetails, setEmiDetails}) => {
-   const {user} = useContext(AuthContext); 
+   const {user, logOut} = useContext(AuthContext); 
    const dateString  = new Date(); 
    const date = dateString.toLocaleDateString()
+   const navigate  = useNavigate(); 
 
    console.log(date); 
    const handleSubmit = (event) => {
@@ -28,11 +31,17 @@ const LoanDetails = ({emiDetails, setEmiDetails}) => {
          }, 
          body: JSON.stringify(loanDetails)
       })
-      .then(res =>res.json())
+      .then(res =>{
+         if(res.status === 403  || res.status ===401){
+            return logOut()
+         }
+         return res.json(); 
+      })
       .then(data => {
          if(data.acknowledged){
             console.log(data); 
-            toast.success("Congratulations your application submitted"); 
+            toast.success("Congratulations your application submitted");
+             navigate('/customer-profile')
          }
       })
       .catch(err => console.log(err)); 

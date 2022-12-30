@@ -5,7 +5,7 @@ import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 import useAdmin from '../../hooks/useAdmin/useAdmin';
 
 const AdminRoute = ({children}) => {
-   const {user, loading} = useContext(AuthContext); 
+   const {user, loading, logOut} = useContext(AuthContext); 
    const {isAdmin , isAdminLoading} = useAdmin(user?.email); 
    const location = useLocation(); 
    
@@ -15,8 +15,10 @@ const AdminRoute = ({children}) => {
 
    if(user && isAdmin){
       return children;
+   }else{
+      logOut(); 
+      return <Navigate to="/signin" state={{from:location}} replace></Navigate>
    }
-   return  <Navigate to="/login" state={{from: location}} replace ></Navigate>
 };
 
 export default AdminRoute;

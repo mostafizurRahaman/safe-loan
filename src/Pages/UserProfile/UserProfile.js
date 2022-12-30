@@ -45,14 +45,14 @@ const UserProfile = () => {
                <h2 className="border-2 border-accent py-1 text-2xl  uppercase font-bold text-accent text-center rounded-sm ">information</h2>
                <div className="px-2 py-3 font-bold text-accent text-base">
                   <h3 className="uppercase ">{user?.displayName}</h3>
-                  <p className="">{user?.email}</p>
+                  <p  className="text-[12px]">{user?.email}</p>
                </div>
             </div>
          </div>
       </aside>
      
       <div className=" px-5 lg:px-10 py-5 w-full ">
-            <div className=" text-4xl font-bold  top-24 right-5 text-secondary p-2 bg-primary rounded-lg fixed lg:hidden z-20" onClick={()=>setShowSide(!showside)} >
+            <div className="animate-bounce text-4xl font-bold  top-24 right-5 text-secondary p-2 bg-primary rounded-lg fixed lg:hidden z-20" onClick={()=>setShowSide(!showside)} >
               
                {
                   showside ?  <IoMdArrowDropleftCircle></IoMdArrowDropleftCircle> : <IoMdArrowDroprightCircle></IoMdArrowDroprightCircle>
