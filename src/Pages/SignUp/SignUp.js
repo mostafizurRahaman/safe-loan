@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 import useToken from "../../hooks/useToken/useToken";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "../../Components/Loading/Loading";
+import useTitle from "../../hooks/useTitle/useTitle";
 
 const SignUp = () => {
    const { createUser, updateInfo } = useContext(AuthContext);
@@ -100,7 +101,7 @@ const SignUp = () => {
             setResLoading(false);
          });
    };
-
+   useTitle("Sign Up")
    if (resLoading) {
       return <Loading></Loading>;
    }

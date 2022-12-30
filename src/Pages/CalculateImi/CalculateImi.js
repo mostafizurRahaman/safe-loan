@@ -2,13 +2,14 @@ import React, {  useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import imiCalculator from "../../Assets/emiCalculator.png";
 import ErrorMessage from "../../Components/ErrorMessage/ErrorMessage";
+import useTitle from "../../hooks/useTitle/useTitle";
 
 
 import LoanDetails from "../LaonDetails/LoanDetails";
 
 const CalculateImi = () => {
    const [emiDetails, setEmiDetails] = useState(null);  
-
+   useTitle("Calculate EMI"); 
    const {
       register,
       handleSubmit,

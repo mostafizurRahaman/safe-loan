@@ -6,6 +6,7 @@ import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 import useToken from '../../hooks/useToken/useToken';
 import { toast } from 'react-hot-toast';
+import useTitle from '../../hooks/useTitle/useTitle';
 const SignIn = () => {
    const {register, handleSubmit, formState:{errors}} =  useForm(); 
    const {logIn} = useContext(AuthContext); 
@@ -34,7 +35,7 @@ const SignIn = () => {
          .catch(err =>setError(err.message))
    }
 
-
+   useTitle('Sign In'); 
    return (
       <div className="min-h-screen py-10 md:px-10 px-5 bg-primary ">
       <div className="flex  items-center justify-center  md:flex-row flex-col-reverse  gap-20 h-auto  ">

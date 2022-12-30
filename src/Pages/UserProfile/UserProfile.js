@@ -7,12 +7,13 @@ import {
    IoMdArrowDropleftCircle,
    IoMdArrowDroprightCircle,
 } from "react-icons/io";
+import useTitle from "../../hooks/useTitle/useTitle";
 
 const UserProfile = () => {
    const { user, logOut } = useContext(AuthContext);
    const { loading } = useContext(AuthContext);
    const [showside, setShowSide] = useState(false);
-
+   useTitle('User Profile')
    const {
       data: loans = [],
       isLoading,
@@ -42,6 +43,7 @@ const UserProfile = () => {
       return <Loading></Loading>;
    }
    console.log(loans);
+   
    return (
       <div className="flex justify-start min-h-screen z-50  ">
          <aside

@@ -10,6 +10,7 @@ import {
 
 import Loading from "../../Components/Loading/Loading";
 import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
+import useTitle from "../../hooks/useTitle/useTitle";
 
 const AdminDashboard = () => {
    const { user, logOut, loading: userLoading } = useContext(AuthContext);
@@ -39,6 +40,8 @@ const AdminDashboard = () => {
          return data;
       },
    });
+
+    
 
    const {
       data: users = [],
@@ -128,6 +131,7 @@ const AdminDashboard = () => {
          })
          .catch((err) => console.log(err));
    };
+   useTitle('Admin Dashboard'); 
 
    if (loading || isLoading || userLoading) {
       return <Loading></Loading>;

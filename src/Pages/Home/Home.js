@@ -1,7 +1,9 @@
 import React from "react";
 import loanHome from "../../Assets/LoanHome.png";
 import PrimaryButton from "../../Components/PrimaryButton/PrimaryButton";
+import useTitle from "../../hooks/useTitle/useTitle";
 const Home = () => {
+   useTitle('Home'); 
    return (
       <div className="flex md:flex-row flex-col-reverse  items-center justify-center   px-5 md:px-10  min-h-screen bg-primary py-10 ">
          <div
