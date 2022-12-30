@@ -1,14 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 import { FaEdit } from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../Components/Loading/Loading";
+import {IoMdArrowDropleftCircle, IoMdArrowDroprightCircle} from 'react-icons/io'; 
 
 
 const UserProfile = () => {
    const { user, logOut } = useContext(AuthContext); 
    const {loading} = useContext(AuthContext); 
-
+   const [showside, setShowSide] = useState(false); 
 
    const {data:loans=[], isLoading, refetch} = useQuery({
       queryKey:["loans", user?.email], 
@@ -31,8 +32,8 @@ const UserProfile = () => {
    }
    console.log(loans); 
    return (
-      <div className="flex justify-start">
-      <aside className="w-[350px] min-h-screen bg-primary px-5 py-5">
+      <div className="flex justify-start min-h-screen z-50  ">
+      <aside className={`z-40 w-[350px] min-h-screen bg-primary px-5 py-5 fixed top-20 lg:sticky duration-1000 transition-all ${showside ? "left-0" : "left-[-999px]"}`}>
          <div>
             <div>
                <div className="flex items-center justify-center relative" >
@@ -49,7 +50,14 @@ const UserProfile = () => {
             </div>
          </div>
       </aside>
-      <div className="md:px-10 py-5 w-full ">
+     
+      <div className=" px-5 lg:px-10 py-5 w-full ">
+            <div className=" text-4xl font-bold  top-24 right-5 text-secondary p-2 bg-primary rounded-lg fixed lg:hidden z-20" onClick={()=>setShowSide(!showside)} >
+              
+               {
+                  showside ?  <IoMdArrowDropleftCircle></IoMdArrowDropleftCircle> : <IoMdArrowDroprightCircle></IoMdArrowDroprightCircle>
+               }
+            </div>
            <div className="flex items-center justify-center ">
                <h2 className="text-center text-3xl border-b-2 border-b-primary  inline-block  font-bold uppercase text-primary  ">My loan's Status</h2>
            </div>
