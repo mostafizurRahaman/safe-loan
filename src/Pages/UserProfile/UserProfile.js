@@ -1,0 +1,55 @@
+import React, { useContext } from "react";
+import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
+import { FaEdit } from "react-icons/fa";
+const UserProfile = () => {
+   const { user } = useContext(AuthContext);
+   return (
+      <div className="flex justify-start">
+         <aside className="w-[350px] min-h-screen bg-primary px-5 py-5">
+            <div>
+               <div>
+                  <div className="flex items-center justify-center relative" >
+                     <img className="w-48 h-48 rounded-full " src={user?.photoURL} alt={user?.displayName} />
+                     <FaEdit className="cursor-pointer  font-bold text-3xl text-secondary absolute top-0 right-0"></FaEdit>
+                  </div>
+               </div>
+               <div className="my-5 border-2 border-accent ">
+                  <h2 className="border-2 border-accent py-1 text-2xl  uppercase font-bold text-accent text-center rounded-sm ">information</h2>
+                  <div className="px-2 py-3 font-bold text-accent text-base">
+                     <h3 className="uppercase ">{user?.displayName}</h3>
+                     <p className="">{user?.email}</p>
+                  </div>
+               </div>
+            </div>
+         </aside>
+         <div className="md:px-10 py-5 w-full ">
+              <div className="flex items-center justify-center ">
+                  <h2 className="text-center text-3xl border-b-2 border-b-primary  inline-block  font-bold uppercase text-primary  ">My loan's Status</h2>
+              </div>
+              <div className="overflow-x-auto">
+            <table className="table table-zebra w-full mt-10">
+               
+               <thead>
+                  <tr>
+                     <th>S.I.</th>
+                     <th>Date</th>
+                     <th>loan</th>
+                     <th>interest rate</th>
+                     <th>monthly payment</th>
+                     <th>total</th>
+                     <th>total interest</th>
+                     <th>status</th>
+                  </tr>
+               </thead>
+               <tbody>               
+                  
+               
+               </tbody>
+            </table>
+            </div>
+         </div>
+      </div>
+   );
+};
+
+export default UserProfile;

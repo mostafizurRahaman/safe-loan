@@ -4,14 +4,21 @@ import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 
 const LoanDetails = ({emiDetails, setEmiDetails}) => {
    const {user} = useContext(AuthContext); 
+   const dateString  = new Date(); 
+   const date = dateString.toLocaleDateString()
 
+   console.log(date); 
    const handleSubmit = (event) => {
+      
+     
       event.preventDefault(); 
       const loanDetails = {
          ...emiDetails, 
          name: user?.displayName, 
          email: user?.email, 
          photo: user?.photoURL,  
+         date: date, 
+         
       }
       fetch(`http://localhost:5000/loans`,{
          method: "post", 

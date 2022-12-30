@@ -4,6 +4,7 @@ import CalculateImi from "../../Pages/CalculateImi/CalculateImi";
 import Home from "../../Pages/Home/Home";
 import SignIn from "../../Pages/SignIn/SignIn";
 import SignUp from "../../Pages/SignUp/SignUp";
+import UserProfile from "../../Pages/UserProfile/UserProfile";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 
 
@@ -33,6 +34,10 @@ const Router = createBrowserRouter([
             {
                path: "/get-loan", 
                element: <PrivateRoute><CalculateImi></CalculateImi></PrivateRoute>
+            }, 
+            {
+               path: "/customer-profile", 
+               element: <UserProfile></UserProfile>
             }, 
             {
                path: '*', 
