@@ -1,8 +1,28 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 import { FaEdit } from "react-icons/fa";
+import { useQuery } from "@tanstack/react-query";
+import { data } from "autoprefixer";
+
 const UserProfile = () => {
-   const { user } = useContext(AuthContext);
+   const { user, logOut } = useContext(AuthContext); 
+
+   const {data:loans=[], isLoading, refetch} = useQuery({
+      queryKey:["loans", user?.email], 
+      queryFn: async() => {
+         const res = await fetch(`http://localhost:5000/loans?email=${user?.email}`, {
+            headers: {
+               authorization: `bearer ${localStorage.getItem('safeLoanToken')}`
+            }
+         })
+         if(res.status === 403 || res.status === 402){
+            return logOut(); 
+         }
+         const data = await res.json(); 
+         return data; 
+      }
+   })
+   console.log(loans); 
    return (
       <div className="flex justify-start">
          <aside className="w-[350px] min-h-screen bg-primary px-5 py-5">
@@ -42,7 +62,22 @@ const UserProfile = () => {
                   </tr>
                </thead>
                <tbody>               
-                  
+                  {
+                     loans.map((loan, idx) => <tr key={loan._id}>
+                        <td>{idx + 1}</td>
+                        <td>{loan.date}</td>
+                        <td>{loan.loan}</td>
+                        <td>{loan.Interest}%</td>
+                        <td>{loan.monthlyEmi}</td>
+                        <td>{loan.totalAmount}</td>
+                        <td>{loan.totalInterest}</td>
+                        <td>{loan?.status=== "approved" ?
+                         <span className="text-secondary font-bold capitalize">approved</span> : 
+                         <span className="text-secondary font-bold capitalize text-green-600">pending</span>
+                           
+                           }</td>
+                      </tr>)
+                  }
                
                </tbody>
             </table>
